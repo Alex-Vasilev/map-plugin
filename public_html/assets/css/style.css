@@ -1,0 +1,32 @@
+/*#modal label { width: auto!important; display:inline!important; }
+#modal img { max-width: none!important; }*/
+#map {width:auto;
+      min-width:400px;
+      height:auto;
+min-height: 400px;
+}
+/*#map label { width: auto!important; display:inline!important; }
+#map img { max-width: none!important; }*/
+
+/*.modal{
+    height: 100px;
+    width: 100px;
+    background: red;
+    position: relative;
+}*/
+
+.coords{
+    background: white;
+}
+
+
+
+/*.map{
+    width: 300px;
+    height: 200px;
+}
+
+[id^="modal"]{
+    width: 400px;
+    height: 300px;
+}*/

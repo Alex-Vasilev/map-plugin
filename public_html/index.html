@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Map-plugin</title>
+        <link href="fonts/font-awesome-4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+        <!--<link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>-->
+        <link href="assets/css/style.css" rel="stylesheet" type="text/css"/>
+        <link href="bower_components/jquery-ui/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <button id="openMap" >Открыть</button>  
+        <div id="newEl">Тут что то да появится, если кнопку нажать</div>
+        <!--<div id="modal"><div class="map"></div></div>-->
+
+
+        <!--<input type="button" value="Нажми меня" onclick="newInf();">-->
+
+        <!--        <button type="button" class="btn btn-success" data-toggle='modal' data-target='#modal'>
+                    Открыть
+                </button>-->
+
+        <!--        <div class="modal" id="modal">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Карта</h4>
+                                <button class="close" type="button" data-dismiss='modal'>
+                                    <i class="fa fa-close"></i>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div id="map"></div>
+                                <div id="coords"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-danger" type="button" data-dismiss='modal'>Закрыть</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>-->
+        <script src="bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>      
+        <!--<script src="bower_components/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>-->
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALVfmpKfIqdaInJ41_JAnZc46em_bBOIM&signed_in=true" async defer></script>
+        <script src="assets/js/newjavascript.js" type="text/javascript"></script>
+        <script src="bower_components/jquery-ui/jquery-ui.js" type="text/javascript"></script>
+        <script type="text/javascript">
+
+            $('#openMap').on('click', function () {
+                function OpenNewWindow(elem) {
+                    this.elem = elem;
+                    this.elem.css({'width': '600px',
+                        'height': '400px',
+                        'backgroundColor': '#000',
+                        'position': 'absolute'}).draggable();
+                    this.map = this.elem.find('.map')
+                            .css({'width': '100%',
+                                'height': '300px',
+                                'backgroundColor': '#eee',
+                            }).mappolydr({});
+                }
+
+                var el;
+                el = document.getElementById("newEl");
+
+                var modal = document.createElement('div');
+                modal.classList.add('modal');
+                el.appendChild(modal);
+
+                var currentId = str_rand();
+                modal.id = currentId;
+
+                var close = document.createElement('div');
+                close.setAttribute('onclick', 'remove(this.parentNode);')
+                modal.appendChild(close);
+
+                var txt = document.createTextNode('x');
+                close.appendChild(txt);
+
+                var map = document.createElement('div');
+                map.classList.add('map');
+                modal.appendChild(map);
+
+                var curEl = $('#' + currentId);
+                console.log(curEl)
+                var newWindow = new OpenNewWindow(curEl);
+            })
+
+            function remove(el) {
+                el.parentNode.removeChild(el);
+            }
+
+            function str_rand() {
+                var result = '';
+                var words = '0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM';
+                var max_position = words.length - 1;
+                for (i = 0; i < 5; ++i) {
+                    position = Math.floor(Math.random() * max_position);
+                    result = result + words.substring(position, position + 1);
+                }
+                return result;
+            }
+
+
+
+
+//rabotaet
+//
+//            $('#openMap').on('click', function () {
+//                var el, s;
+//                el = document.getElementById("newEl");
+//                this.modal = document.createElement('div');
+//                this.modal.classList.add('modal');
+//                var currentId = str_rand()
+//                this.modal.id = currentId;
+//                el.appendChild(this.modal);
+//                var close = document.createElement('div');
+//                close.setAttribute('onclick', 'clik(this.parentNode);')
+//                this.modal.appendChild(close);
+//                var txt = document.createTextNode('x');
+//                close.appendChild(txt);
+//                var map = document.createElement('div');
+//                map.classList.add('map');
+//                this.modal.appendChild(map);
+//
+//
+//                function str_rand() {
+//                    var result = '';
+//                    var words = '0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM';
+//                    var max_position = words.length - 1;
+//                    for (i = 0; i < 5; ++i) {
+//                        position = Math.floor(Math.random() * max_position);
+//                        result = result + words.substring(position, position + 1);
+//                    }
+//                    return result;
+//                }
+//
+////                console.log($(currentId))
+////                s = el.innerHTML;
+////s=s+'<input type="checkbox" onclick="clik(this);">';
+////                s = s + '<div class="modal"><div onclick="clik(this.parentNode);">x</div><div class="map"></div></div>';
+////                el.innerHTML = s;
+//
+//                currentId = '#'+currentId;
+//
+//                $(currentId)
+//                        .css({'width': '600px',
+//                            'height': '400px',
+//                            'backgroundColor': '#000',
+//                            'position': 'absolute'}).draggable();
+//                $(currentId).find('.map').css({'width': '100%',
+//                    'height': '300px',
+//                    'backgroundColor': '#eee',
+//                }).mappolydr({
+//
+//                });
+//            })
+//
+//            function clik(el) {
+//                el.parentNode.removeChild(el);
+//            }
+//            ;
+
+
+
+
+
+
+
+
+
+//            $('#openMap').on('click', function () {
+//                var wnd = document.createElement('div');
+//                wnd.classList.add('modal');
+//
+//                var map = document.createElement('div');
+//                map.classList.add('map');
+//                wnd.appendChild(map);
+//
+//                var closeBtn = document.createElement('button');
+//                closeBtn.classList.add('closeBtn');
+//                var txt = document.createTextNode('x');
+//                closeBtn.appendChild(txt);
+//                wnd.appendChild(closeBtn);
+//
+////                $('.closeBtn')
+//
+//
+//                document.body.appendChild(wnd);
+//
+//
+//
+//                $('.map').css({'width': '500px',
+//                    'height': '300px',
+//                    'backgroundColor': '#eee',
+//                });
+//
+//                $('.modal')
+//                        .css({'width': '600px',
+//                            'height': '400px',
+//                            'backgroundColor': '#000',
+//                            'position': 'absolute'}).draggable();
+//
+//                $('.closeBtn').css({'backgroundColor': '#fff'}).on('click', function () {
+//                  console.log(this)
+//                })
+//
+//
+//                $(".map").mappolydr({
+////					 zoom:12,
+////                                         width: 550,
+////                                         height: 350
+//
+//                });
+//
+//
+//
+//            })
+
+
+
+
+
+
+
+//            function OpenNewWindow(el) {
+//            this.newEl = el;
+////                    this.placeholder = this.dd.children('span');
+////                    this.opts = this.dd.find('ul.dropdown > li');
+////                    this.val = '';
+////                    this.index = -1;
+////                    this.initEvents();
+////                   this.currentVal = 0;
+//            this.map = this.newEl.find('.map').mappolydr({});
+////                   this.wnd;
+////                   this.mapBlock;
+//            }
+//            OpenNewWindow.prototype = {
+//
+//            }
+//
+//
+//            $('#openMap').on('click', function () {
+//            createNewWindow();
+//            var dd = new OpenNewWindow($('#modal' + this.currentVal));
+//            })
+//
+//            function createNewWindow(){
+//            var wnd = document.createElement('div');           
+//            var currentId = 'modal' + str_rand();
+//            wnd.id = currentId
+//            console.log(currentId)
+//            wnd.id = currentId;
+//            var mapBlock = document.createElement('div');
+//            mapBlock.classList.add('map');
+//            wnd.appendChild(mapBlock);
+//            document.body.appendChild(wnd);
+////                    self.currentVal++;
+//            console.log(2)
+//            }
+//
+//
+//            function str_rand() {
+//            var result = '';
+//            var words = '0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM';
+//            var max_position = words.length - 1;
+//            for (i = 0; i < 5; ++i) {
+//            position = Math.floor (Math.random() * max_position);
+//            result = result + words.substring(position, position + 1);
+//            }
+//            return result;
+//            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//var currentVal;
+//            $('#openMap').on('click', function () {
+//                console.log(1)
+//
+//
+//
+//                 
+////                var self = this;   
+//              
+//               function createNewWindow(){
+//                    var wnd = document.createElement('div');
+////                    wnd.id = 'modal' + self.currentVal;
+//                   var currentId = 'modal' + currentVal;
+//                        console.log(currentId)
+//                        wnd.id = currentId;
+//                    var mapBlock = document.createElement('div');
+//                    mapBlock.classList.add('map');
+//                    wnd.appendChild(mapBlock);
+//                    
+//                    document.body.appendChild(wnd);
+////                    self.currentVal++;
+//                    console.log(2)
+//               }
+//
+//
+////                OpenNewWindow.prototype = {
+////                    constructor: OpenNewWindow,
+////                    createNewWindow: function () {
+////                        this.wnd = document.createElement('div');
+////                        currentId = 'modal' + currentVal;
+////                        console.log(currentId)
+////                        this.wnd.id = currentId;
+////                        this.mapBlock = document.createElement('div');
+////                        this.mapBlock.classList.add('map');
+////                        this.wnd.appendChild(this.mapBlock);
+////                        document.body.appendChild(this.wnd);
+////                        
+////                        currentVal++;
+////                        console.log(2);
+//////                        return this;
+////                    }
+//
+//
+//                $(function () {
+//                    createNewWindow();
+//                    var dd = new OpenNewWindow($('#modal'+this.currentVal));
+//                    console.log(3)
+//                    
+//                                                     $('#modal'+this.currentVal)
+//                        .css({'width': '600px',
+//                            'height': '400px',
+//                            'backgroundColor': '#000',
+//                            'position': 'absolute'}).draggable();
+//                    $(document).click(function () {
+//                        // all dropdowns
+////                        $('.wrapper-dropdown-3').removeClass('active');
+//                    });
+//                });
+//            })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//            var currentVal = 1;
+//            $('#openMap').on('click', function () {
+//                function OpenNewWindow(el) {
+//                    this.newWindow = el;
+////                this.open = document.getElementById('openMap');
+//                    this.close = this.newWindow.find('.closeBtn');
+////                this.current = 0;
+////                    this.placeholder = this.dd.children('span');
+////                    this.opts = this.dd.find('ul.dropdown > li');
+////                    this.val = '';
+////                    this.index = -1;
+//                    this.initEvents();
+//                    console.log(this.newWindow);
+//                    this.map = this.newWindow.find(".map").mappolydr({});
+//                }
+//
+//                OpenNewWindow.prototype = {
+//                    initEvents: function () {
+//                        var obj = this;
+//                        this.close.on('click', function () {
+//                            var opt = $(this);
+//                            console.log(obj.current)
+//                        });
+//                    }
+//                }
+//
+//
+////                var currentVal = 1;
+//                function makeCounter() {
+//
+//                    return function () {
+//                        return currentVal++;
+//                    };
+//                }
+//                ;
+//                var counter = makeCounter();
+//                counter();
+//                var wnd = document.createElement('div');
+//                wnd.classList.add('modal');
+//                wnd.id = 'modal' + currentVal;
+////                $wnd = wnd;
+////                console.log(wnd)
+//                var map = document.createElement('div');
+//                map.classList.add('map');
+//                wnd.appendChild(map);
+//                var closeBtn = document.createElement('button');
+//                closeBtn.classList.add('closeBtn');
+//                var txt = document.createTextNode('x');
+//                closeBtn.appendChild(txt);
+//                wnd.appendChild(closeBtn);
+//                document.body.appendChild(wnd);
+//                $('.modal')
+//                        .css({'width': '600px',
+//                            'height': '400px',
+//                            'backgroundColor': '#000',
+//                            'position': 'absolute'}).draggable();
+//                $('.map').css({'width': '500px',
+//                    'height': '300px',
+//                    'backgroundColor': '#eee',
+//                });
+//                var newWindow = new OpenNewWindow('#modal' + currentVal);
+////                $(document).click(function () {
+////                    // all dropdowns
+////                    $('.wrapper-dropdown-3').removeClass('active');
+////                });
+//            })
+
+
+
+
+
+
+
+
+//            $(function () {
+//                var $modal = $('#modal'),
+//                        $map = $('#map');
+//                $modal.on('shown.bs.modal', function () {
+//                    google.maps.event.trigger($map[0], 'resize');
+//                    $("#map").mappolydr({
+////					 zoom:12,
+////                                         width: 550,
+////                                         height: 350
+//
+//                    });
+//                });
+//            });
+        </script>
+    </body>
+</html>
