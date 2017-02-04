@@ -9,14 +9,10 @@
             return this;
         },
         
-        options: {
-//			"width": 800,
-//			"height": 500,
+        options: {          
             "zoom": 15,
             "figureCoords": [],
             "markers": [],
-            // "polygons": [],
-            "figures": [],
             "figureSelected": {},
             "disableDefaultUI": true,
             "backgroundColor": "#fff",
@@ -83,27 +79,7 @@
             map.controls[google.maps.ControlPosition.TOP_CENTER].push(panelControlDiv);
 
             function PanelControl(panelControlDiv, map) {
-                panelControlDiv.style.clear = 'both';
-                
-               
-//                 var inputTxt = document.createElement('input');
-//                inputTxt.style.backgroundColor = o.backgroundColor;
-//                inputTxt.style.border = o.borderButton;
-//                inputTxt.id = 'inputCoords';
-//                inputTxt.style.width = '100%';
-//                inputTxt.style.height = '30px';
-//                inputTxt.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
-//                inputTxt.style.cursor = 'pointer';
-//                inputTxt.style.position = 'absolute';
-//                inputTxt.setAttribute('placeholder', 'Введите координаты')
-//                inputTxt.style.top = '101%';
-//
-//
-////                inputTxt.style.textAlign = 'center';
-////                inputTxt.style.float = 'left';
-////                inputTxt.title = 'Click to add marker or construct polygon';
-//                panelControlDiv.appendChild(inputTxt);
-                
+                panelControlDiv.style.clear = 'both';            
                 
                 var addUI = document.createElement('div');
                 addUI.style.backgroundColor = o.backgroundColor;
@@ -268,7 +244,7 @@
 
                         o.figureCoords = self.poly.getPath();
                         self.poly.setMap(null);
-                        self.constructPolygon();
+                        self.constructPolygon(map);
                         isClosed = true;
                         self.poly.setMap(map);
                         o.figures.push(self.poly);
@@ -279,9 +255,10 @@
             });
         },
         
-        constructPolygon: function () {
+        constructPolygon: function (map) {
             var o = this.options;
             this.poly = new google.maps.Polygon({
+//                map:map,
                 paths: o.figureCoords,
                 strokeColor: '#FF0000',
                 strokeOpacity: 0.3,
@@ -336,7 +313,6 @@
             }
 
             o.figures.splice(val, 1)
-            // o.polygons.splice(val, 1)
             clearFigureSelected();
             o.figureSelected = {};
 
@@ -368,6 +344,7 @@
         exportPolygonCoords: function () {
             var o = this.options;
             var arrPolygons = [];
+            
 
             for (var i = 0; i < o.figures.length; i++) {
                 var len = o.figures[i].getPath().getLength();
@@ -380,15 +357,13 @@
                 }
                 arrPolygons.push(arr);
             }
-            $('#inputCoords').innerHTML = JSON.stringify(arrPolygons);
-            console.log(JSON.stringify(arrPolygons))
-            console.log(this.elem.parentNode )
-            console.log(this.elem.parentNode.getElementsByClassName('coords'))
+           var txt = JSON.stringify(arrPolygons);
+            o.coords.val(txt);
         },
         
         importPolygonCoords: function (map) {
             var o = this.options;
-            var str = this.elem.parentNode.getElementsByClassName('coords')[0].innerHTML;
+            var str = o.coords.val();
 
             if (str) {
                 str = JSON.parse(str);
@@ -397,7 +372,6 @@
                     o.figureCoords = item;
                     self.constructPolygon();
                     self.poly.setMap(map);
-                    // o.polygons.push(o.figureCoords);
                     o.figures.push(self.poly);
                 })
             }
