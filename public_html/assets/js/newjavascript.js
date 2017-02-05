@@ -81,7 +81,7 @@
             function PanelControl(panelControlDiv, map) {
                 panelControlDiv.style.clear = 'both';            
                 
-                var addUI = document.createElement('div');
+                var addUI = document.createElement('button');
                 addUI.style.backgroundColor = o.backgroundColor;
                 addUI.style.border = o.borderButton;
                 addUI.id = 'add';
@@ -102,7 +102,7 @@
                 addText.innerHTML = 'Добавить';
                 addUI.appendChild(addText);
 
-                var deleteUI = document.createElement('div');
+                var deleteUI = document.createElement('button');
                 deleteUI.style.backgroundColor = o.backgroundColor;
                 deleteUI.style.border = o.borderButton;
                 deleteUI.style.width = '100px';
@@ -122,7 +122,7 @@
                 deleteText.innerHTML = 'Удалить';
                 deleteUI.appendChild(deleteText);
 
-                var deleteAllUI = document.createElement('div');
+                var deleteAllUI = document.createElement('button');
                 deleteAllUI.style.backgroundColor = o.backgroundColor;
                 deleteAllUI.style.border = o.borderButton;
                 deleteAllUI.id = 'deleteall';
@@ -143,7 +143,7 @@
                 deleteAllText.innerHTML = 'Удалить все';
                 deleteAllUI.appendChild(deleteAllText);
 
-                var importUI = document.createElement('div');
+                var importUI = document.createElement('button');
                 importUI.style.backgroundColor = o.backgroundColor;
                 importUI.style.border = o.borderButton;
                 importUI.style.width = '100px';
@@ -163,7 +163,7 @@
                 importText.innerHTML = 'Импорт';
                 importUI.appendChild(importText);
 
-                var exportUI = document.createElement('div');
+                var exportUI = document.createElement('button');
                 exportUI.style.backgroundColor = o.backgroundColor;
                 exportUI.style.border = o.borderButton;
                 exportUI.style.width = '100px';
@@ -188,6 +188,7 @@
             var self = this;
             this.add = panelControlDiv.firstChild;
             this.add.addEventListener("click", function () {
+                self.add.setAttribute('disabled', true);
                 self.addPol(map);
             });
 
@@ -226,11 +227,10 @@
             });
 
             google.maps.event.addListener(map, 'click', function (clickEvent) {
-                if (isClosed)
-                    return;
+                if (isClosed) return;
+                
                 var markerIndex = self.poly.getPath().length;
                 var isFirstMarker = markerIndex === 0;
-
                 var marker = new google.maps.Marker({
                     map: map,
                     position: clickEvent.latLng
@@ -239,8 +239,7 @@
 
                 if (isFirstMarker) {
                     google.maps.event.addListener(marker, 'click', function () {
-                        if (isClosed)
-                            return;
+                        if (isClosed) return;
 
                         o.figureCoords = self.poly.getPath();
                         self.poly.setMap(null);
@@ -249,6 +248,7 @@
                         self.poly.setMap(map);
                         o.figures.push(self.poly);
                         self.deleteMarkers(map);
+                        self.add.removeAttribute("disabled");
                     });
                 }
                 self.poly.getPath().push(clickEvent.latLng);
