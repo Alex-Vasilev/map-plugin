@@ -11,26 +11,55 @@
     </head>
     <body>
         <button id="openMap" >Открыть</button>  
+        <!--<div id="newEl">Тут что то да появится, если кнопку нажать</div>-->
+        <!--<div id="modal"><div class="map"></div></div>-->
+
+
+        <!--<input type="button" value="Нажми меня" onclick="newInf();">-->
+
+        <!--        <button type="button" class="btn btn-success" data-toggle='modal' data-target='#modal'>
+                    Открыть
+                </button>-->
+
+        <!--        <div class="modal" id="modal">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Карта</h4>
+                                <button class="close" type="button" data-dismiss='modal'>
+                                    <i class="fa fa-close"></i>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div id="map"></div>
+                                <div id="coords"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-danger" type="button" data-dismiss='modal'>Закрыть</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>-->
         <script src="bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>      
+        <!--<script src="bower_components/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>-->
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALVfmpKfIqdaInJ41_JAnZc46em_bBOIM&signed_in=true" async defer></script>
         <script src="assets/js/newjavascript.js" type="text/javascript"></script>
         <script src="bower_components/jquery-ui/jquery-ui.js" type="text/javascript"></script>
-        <script src="node_modules/hull.js/dist/hull.js" type="text/javascript"></script>
         <script type="text/javascript">
 
             $('#openMap').on('click', function () {
                 function OpenNewWindow(elem) {
                     this.elem = elem;
                     console.log(this.elem.attr( "id"))
-                    this.elem.css({'width': '800px',
-                        'height': '500px',
-                        'position': 'absolute'
-                    }).draggable();
+                    this.elem.css({'width': '600px',
+                        'height': '400px',
+                        'backgroundColor': '#000',
+                        'position': 'absolute'}).draggable();
                     this.figures = [];
                     this.map = this.elem.find('.map')
                             .css({'width': '100%',
-                                'height': '400px',
-                                'backgroundColor': '#eee'
+                                'height': '300px',
+                                'backgroundColor': '#eee',
                             }).mappolydr({
                                 'id': this.elem.attr( "id"),
                                 'coords' : this.elem.find('.coords'),
@@ -45,59 +74,31 @@
                 modal.id = currentId;
 
                 var close = document.createElement('div');
-                close.setAttribute('onclick', 'remove(this.parentNode);');
-                close.classList.add('closeWindow');
+                close.setAttribute('onclick', 'remove(this.parentNode);')
                 modal.appendChild(close);
 
-                var txt = document.createTextNode('Закрыть');
+                var txt = document.createTextNode('x');
                 close.appendChild(txt);
-                
-                
-                 var hide = document.createElement('div');
-                hide.setAttribute('onclick', 'hide(this);');
-                hide.classList.add('getHideWindow');
-                modal.appendChild(hide);
-
-                var txt = document.createTextNode('Свернуть');
-                hide.appendChild(txt);
-                
 
                 var map = document.createElement('div');
                 map.classList.add('map');
                 modal.appendChild(map);
                 
-                var coords = document.createElement('textarea');
-                coords.setAttribute('placeholder', 'Введите данные для импорта');
-                coords.setAttribute('rows', '5');
+                var coords = document.createElement('input');
                 coords.classList.add('coords');
                 modal.appendChild(coords);
                 
-                var txtCoords = document.createTextNode( '');
+                var txtCoords = document.createTextNode( '')
                 coords.appendChild(txtCoords);
 
 
                 var curEl = $('#' + currentId);
-                console.log(curEl);
+                console.log(curEl)
                 var newWindow = new OpenNewWindow(curEl);
-            });
+            })
 
             function remove(el) {
                 el.parentNode.removeChild(el);
-            }
-            
-            function hide(el) {       
-                var hideEl = document.createElement('div');
-                hideEl.classList.add('hidden')
-                var txtHide = document.createTextNode('Окно ' + el.parentNode.id);        
-                var hiddenModal = el.parentNode;
-                 
-                document.body.appendChild(hideEl);
-                hideEl.appendChild(txtHide);
-                el.parentNode.style.display = 'none';
-                hideEl.addEventListener("click", function () {
-                                 hiddenModal.style.display = 'block';
-                                 document.body.removeChild(hideEl);
-            });
             }
 
             function str_rand() {

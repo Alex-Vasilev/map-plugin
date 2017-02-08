@@ -85,13 +85,12 @@
                 addUI.style.backgroundColor = o.backgroundColor;
                 addUI.style.border = o.borderButton;
                 addUI.id = 'add';
-                
                 addUI.style.width = '100px';
                 addUI.style.height = '30px';
                 addUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
                 addUI.style.cursor = 'pointer';
                 addUI.style.textAlign = 'center';
-                addUI.style.outline = 'none';
+                addUI.style.float = 'left';
                 addUI.title = 'Click to add marker or construct polygon';
                 panelControlDiv.appendChild(addUI);
 
@@ -112,9 +111,7 @@
                 deleteUI.style.cursor = 'pointer';
                 deleteUI.style.textAlign = 'center';
                 deleteUI.title = 'Click to delete polygon';
-//                deleteUI.style.float = 'left';
-                deleteUI.style.outline = 'none';
-
+                deleteUI.style.float = 'left';
                 panelControlDiv.appendChild(deleteUI);
 
                 var deleteText = document.createElement('div');
@@ -135,9 +132,7 @@
                 deleteAllUI.style.cursor = 'pointer';
                 deleteAllUI.style.textAlign = 'center';
                 deleteAllUI.title = 'Click to delete all';
-//                deleteAllUI.style.float = 'left';
-                deleteAllUI.style.outline = 'none';
-
+                deleteAllUI.style.float = 'left';
                 panelControlDiv.appendChild(deleteAllUI);
 
                 var deleteAllText = document.createElement('div');
@@ -149,7 +144,6 @@
                 deleteAllUI.appendChild(deleteAllText);
 
                 var importUI = document.createElement('button');
-                importUI.classList.add('adad');
                 importUI.style.backgroundColor = o.backgroundColor;
                 importUI.style.border = o.borderButton;
                 importUI.style.width = '100px';
@@ -158,9 +152,7 @@
                 importUI.style.cursor = 'pointer';
                 importUI.style.textAlign = 'center';
                 importUI.title = 'Import';
-//                importUI.style.float = 'left';
-                importUI.style.outline = 'none';
-
+                importUI.style.float = 'left';
                 panelControlDiv.appendChild(importUI);
 
                 var importText = document.createElement('div');
@@ -178,11 +170,10 @@
                 exportUI.style.height = '30px';
                 exportUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
                 exportUI.style.cursor = 'pointer';
-                exportUI.style.outline = 'none';
-
+                exportUI.style.verticalAlign = 'middle';
                 exportUI.style.textAlign = 'center';
                 exportUI.title = 'Export';
-//                exportUI.style.float = 'left';
+                exportUI.style.float = 'left';
                 panelControlDiv.appendChild(exportUI);
 
                 var exportText = document.createElement('div');
