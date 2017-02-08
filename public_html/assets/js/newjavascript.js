@@ -8,8 +8,8 @@
             this.build();
             return this;
         },
-        
-        options: {          
+
+        options: {
             "zoom": 15,
             "figureCoords": [],
             "markers": [],
@@ -19,7 +19,7 @@
             "borderButton": "2px solid #fff",
             "color": "rgb(25,25,25)"
         },
-        
+
         build: function () {
             var o = this.options;
             $(this.elem).width(o.width).height(o.height);
@@ -36,7 +36,7 @@
                 alert("Geolocation API не поддерживается в вашем браузере");
             }
         },
-        
+
         setupMap: function (lat, lng) {
 
             var o = this.options;
@@ -59,7 +59,7 @@
             this.placeMainMarker(myLatlng, map);
             this.createPanel(map);
         },
-        
+
         placeMainMarker: function (myLatlng, map) {
             this.myLatlng = myLatlng;
             var myMarker = new google.maps.Marker({
@@ -68,7 +68,7 @@
                 map: map
             });
         },
-        
+
         createPanel: function (map) {
             var o = this.options;
 
@@ -79,13 +79,13 @@
             map.controls[google.maps.ControlPosition.TOP_CENTER].push(panelControlDiv);
 
             function PanelControl(panelControlDiv, map) {
-                panelControlDiv.style.clear = 'both';            
-                
+                panelControlDiv.style.clear = 'both';
+
                 var addUI = document.createElement('button');
                 addUI.style.backgroundColor = o.backgroundColor;
                 addUI.style.border = o.borderButton;
                 addUI.id = 'add';
-                
+
                 addUI.style.width = '100px';
                 addUI.style.height = '30px';
                 addUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
@@ -112,7 +112,6 @@
                 deleteUI.style.cursor = 'pointer';
                 deleteUI.style.textAlign = 'center';
                 deleteUI.title = 'Click to delete polygon';
-//                deleteUI.style.float = 'left';
                 deleteUI.style.outline = 'none';
 
                 panelControlDiv.appendChild(deleteUI);
@@ -135,7 +134,6 @@
                 deleteAllUI.style.cursor = 'pointer';
                 deleteAllUI.style.textAlign = 'center';
                 deleteAllUI.title = 'Click to delete all';
-//                deleteAllUI.style.float = 'left';
                 deleteAllUI.style.outline = 'none';
 
                 panelControlDiv.appendChild(deleteAllUI);
@@ -158,7 +156,6 @@
                 importUI.style.cursor = 'pointer';
                 importUI.style.textAlign = 'center';
                 importUI.title = 'Import';
-//                importUI.style.float = 'left';
                 importUI.style.outline = 'none';
 
                 panelControlDiv.appendChild(importUI);
@@ -182,7 +179,6 @@
 
                 exportUI.style.textAlign = 'center';
                 exportUI.title = 'Export';
-//                exportUI.style.float = 'left';
                 panelControlDiv.appendChild(exportUI);
 
                 var exportText = document.createElement('div');
@@ -221,7 +217,7 @@
                 self.exportPolygonCoords();
             });
         },
-        
+
         addPol: function (map) {
             var o = this.options;
             var self = this;
@@ -236,8 +232,9 @@
             });
 
             google.maps.event.addListener(map, 'click', function (clickEvent) {
-                if (isClosed) return;
-                
+                if (isClosed)
+                    return;
+
                 var markerIndex = self.poly.getPath().length;
                 var isFirstMarker = markerIndex === 0;
                 var marker = new google.maps.Marker({
@@ -245,52 +242,53 @@
                     position: clickEvent.latLng
                 });
                 o.markers.push(marker);
-                
+
                 if (isFirstMarker) {
                     google.maps.event.addListener(marker, 'click', function () {
-                        if (isClosed) return;          
-                                    var vertices = self.poly.getPath(),
-                result,
-                xy;
+                        if (isClosed)
+                            return;
+                        var vertices = self.poly.getPath(),
+                                result,
+                                xy;
 
-            if (vertices.getLength() > 1) {
-                result = [];
-                for (var i = 0; i < vertices.getLength(); i++) {
-                    xy = vertices.getAt(i);
-                    result.push({lat: xy.lat(), lng: xy.lng()});
-                }
-            } else {
-                xy = vertices.getAt(0);
-                result = {lat: xy.lat(), lng: xy.lng()};
-            }
+                        if (vertices.getLength() > 1) {
+                            result = [];
+                            for (var i = 0; i < vertices.getLength(); i++) {
+                                xy = vertices.getAt(i);
+                                result.push({lat: xy.lat(), lng: xy.lng()});
+                            }
+                        } else {
+                            xy = vertices.getAt(0);
+                            result = {lat: xy.lat(), lng: xy.lng()};
+                        }
 
-                        if(result.length < 3) return;
-                                               
-                        o.figureCoords = self.graham(result);                                                                                        
+                        if (result.length < 3) return;
+
+                        o.figureCoords = self.graham(result);
                         self.poly.setMap(null);
                         self.constructPolygon(map);
                         isClosed = true;
                         self.poly.setMap(map);
                         o.figures.push(self.poly);
                         self.deleteMarkers(map);
-                        self.add.removeAttribute("disabled");                        
+                        self.add.removeAttribute("disabled");
                     });
                 }
                 self.poly.getPath().push(clickEvent.latLng);
             });
         },
-        
-        graham : function (points) { 
+
+        graham: function (points) {
             function classify(vector, x1, y1) {
                 return (vector.x2 - vector.x1) * (y1 - vector.y1) - (vector.y2 - vector.y1) * (x1 - vector.x1);
             }
 
             var ch = [],
-                minI = 0,
-                min = points[0].lat,
-                temp,
-                h = [],
-                result = [];
+                    minI = 0,
+                    min = points[0].lat,
+                    temp,
+                    h = [],
+                    result = [];
 
             for (var i = 0; i < points.length; i++) {
                 ch.push(i);
@@ -339,10 +337,10 @@
             for (var i = 0; i < h.length; i++) {
                 result.push(points[h[i]]);
             }
-            
+
             return result;
         },
-        
+
         constructPolygon: function (map) {
             var o = this.options;
             this.poly = new google.maps.Polygon({
@@ -371,7 +369,7 @@
                 }
             }
         },
-        
+
         deleteFigures: function (map) {
             var o = this.options;
             clearFigures();
@@ -387,7 +385,7 @@
                 setMapOnAllFigure(null);
             }
         },
-        
+
         deleteFigureSelected: function (map) {
             var o = this.options;
             var val;
@@ -411,7 +409,7 @@
                 setMapOnAllFigureSelected(null);
             }
         },
-        
+
         deleteMarkers: function (map) {
             var o = this.options;
             clearMarkers();
@@ -427,11 +425,11 @@
                 setMapOnAll(null);
             }
         },
-        
+
         exportPolygonCoords: function () {
             var o = this.options;
             var arrPolygons = [];
-            
+
 
             for (var i = 0; i < o.figures.length; i++) {
                 var len = o.figures[i].getPath().getLength();
@@ -444,10 +442,10 @@
                 }
                 arrPolygons.push(arr);
             }
-           var txt = JSON.stringify(arrPolygons);
+            var txt = JSON.stringify(arrPolygons);
             o.coords.val(txt);
         },
-        
+
         importPolygonCoords: function (map) {
             var o = this.options;
             var str = o.coords.val();

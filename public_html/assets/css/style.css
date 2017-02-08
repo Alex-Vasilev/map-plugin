@@ -4,21 +4,22 @@ body{
 }
 
 #openMap{
-     background: #AC9DE9;
-        box-shadow: 0 2px 6px rgba(0,0,0,.2);
-        border: 0;
-        cursor: pointer;
-        padding: 8px 16px;
-        outline: none;
-        font-size:18px;
-        color: #fff;
+    background: #AC9DE9;
+    box-shadow: 0 2px 6px rgba(0,0,0,.2);
+    border: 0;
+    cursor: pointer;
+    padding: 8px 16px;
+    outline: none;
+    font-size:18px;
+    color: #fff;
+    margin-bottom: 10px;
 }
 
 #openMap:hover{
     background: white;
-        box-shadow: 0 2px 6px rgba(0,0,0,.3);
-        color: #999;
-        transition: all .3s;
+    box-shadow: 0 2px 6px rgba(0,0,0,.3);
+    color: #999;
+    transition: all .3s;
 }
 
 .closeWindow, .getHideWindow{
@@ -64,8 +65,8 @@ body{
 }
 
 .hidden:hover{
-  transform: translateY(-1%);
-  box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.3);  
-  transition: all .3s;
-  color: #666;
+    transform: translateY(-1%);
+    box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.3);  
+    transition: all .3s;
+    color: #666;
 }
