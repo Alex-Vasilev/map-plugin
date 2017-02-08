@@ -236,29 +236,107 @@
                     position: clickEvent.latLng
                 });
                 o.markers.push(marker);
-
+                
                 if (isFirstMarker) {
                     google.maps.event.addListener(marker, 'click', function () {
-                        if (isClosed) return;
+                        if (isClosed) return;          
+                                    var vertices = self.poly.getPath(),
+                result,
+                xy;
 
-                        o.figureCoords = self.poly.getPath();
+            if (vertices.getLength() > 1) {
+                result = [];
+                for (var i = 0; i < vertices.getLength(); i++) {
+                    xy = vertices.getAt(i);
+                    result.push({lat: xy.lat(), lng: xy.lng()});
+                }
+            } else {
+                xy = vertices.getAt(0);
+                result = {lat: xy.lat(), lng: xy.lng()};
+            }
+
+                        if(result.length < 3) return;
+                                               
+                        o.figureCoords = self.graham(result);                                                                                        
                         self.poly.setMap(null);
                         self.constructPolygon(map);
                         isClosed = true;
                         self.poly.setMap(map);
                         o.figures.push(self.poly);
                         self.deleteMarkers(map);
-                        self.add.removeAttribute("disabled");
+                        self.add.removeAttribute("disabled");                        
                     });
                 }
                 self.poly.getPath().push(clickEvent.latLng);
             });
         },
         
+        graham : function (points) { 
+            function classify(vector, x1, y1) {
+                return (vector.x2 - vector.x1) * (y1 - vector.y1) - (vector.y2 - vector.y1) * (x1 - vector.x1);
+            }
+
+            var ch = [],
+                minI = 0,
+                min = points[0].lat,
+                temp,
+                h = [],
+                result = [];
+
+            for (var i = 0; i < points.length; i++) {
+                ch.push(i);
+                if (points[i].lat < min) {
+                    min = points[i].lat;
+                    minI = i;
+                }
+            }
+
+            ch[0] = minI;
+            ch[minI] = 0;
+
+            for (var i = 1; i < ch.length - 1; i++) {
+                for (var j = i + 1; j < ch.length; j++) {
+                    var cl = classify({
+                        'x1': points[ch[0]].lat,
+                        'y1': points[ch[0]].lng,
+                        'x2': points[ch[i]].lat,
+                        'y2': points[ch[i]].lng
+                    }, points[ch[j]].lat, points[ch[j]].lng);
+
+                    if (cl < 0) {
+                        temp = ch[i];
+                        ch[i] = ch[j];
+                        ch[j] = temp;
+                    }
+                }
+            }
+
+            h = [];
+            h[0] = ch[0];
+            h[1] = ch[1];
+
+            for (var i = 2; i < ch.length; i++) {
+                while (classify({
+                    'x1': points[h[h.length - 2]].lat,
+                    'y1': points[h[h.length - 2]].lng,
+                    'x2': points[h[h.length - 1]].lat,
+                    'y2': points[h[h.length - 1]].lng
+                }, points[ch[i]].lat, points[ch[i]].lng) < 0) {
+                    h.pop();
+                }
+                h.push(ch[i]);
+            }
+
+            for (var i = 0; i < h.length; i++) {
+                result.push(points[h[i]]);
+            }
+            
+            return result;
+        },
+        
         constructPolygon: function (map) {
             var o = this.options;
             this.poly = new google.maps.Polygon({
-//                map:map,
                 paths: o.figureCoords,
                 strokeColor: '#FF0000',
                 strokeOpacity: 0.3,
@@ -312,7 +390,7 @@
                 }
             }
 
-            o.figures.splice(val, 1)
+            o.figures.splice(val, 1);
             clearFigureSelected();
             o.figureSelected = {};
 
@@ -350,7 +428,7 @@
                 var len = o.figures[i].getPath().getLength();
                 var arr = [];
                 for (var j = 0; j < len; j++) {
-                    var htmlCoordsLng = o.figures[i].getPath().getAt(j).lng()
+                    var htmlCoordsLng = o.figures[i].getPath().getAt(j).lng();
                     var htmlCoordsLat = o.figures[i].getPath().getAt(j).lat();
                     var htmlCoords = {lat: htmlCoordsLat, lng: htmlCoordsLng};
                     arr.push(htmlCoords);
@@ -373,7 +451,7 @@
                     self.constructPolygon();
                     self.poly.setMap(map);
                     o.figures.push(self.poly);
-                })
+                });
             }
         }
     };
@@ -384,7 +462,7 @@
                 var md = Object.create(MapPolyDr);
                 md.init(options, this);
                 $.data(this, 'mappolydr', md);
-            })
+            });
         }
-    }
+    };
 })(jQuery);
