@@ -21,7 +21,6 @@ body{
         transition: all .3s;
 }
 
-
 .closeWindow, .getHideWindow{
     font-size:18px;
     color: #999;
